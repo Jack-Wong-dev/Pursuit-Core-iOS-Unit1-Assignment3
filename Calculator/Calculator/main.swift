@@ -17,7 +17,7 @@ func menu(){
     print("Enter type of calculation, 1 (regular) or 2 (high order)?")
     let regOrHigh = readLine()
     
-    if let decision = regOrHigh{
+    if let decision = regOrHigh?.trimmingCharacters(in: .whitespacesAndNewlines){
         switch decision{
         case "1":
             binaryOption()
@@ -136,43 +136,45 @@ func binaryOption(){
         }
     }
     
-    getInput() //Retrieve input first
-    checkInput() //verify input
-    
-    switch op {
-    case "?":
-        if let randomOp = operations.randomElement()?.key{
-            randomOperator = randomOp
+    func getAnswer(){
+        switch op {
+        case "?":
+            if let randomOp = operations.randomElement()?.key{
+                randomOperator = randomOp
+                if let a = Double(f), let b = Double(s){
+                    first = a
+                    second = b
+                    if let answer = operations[randomOp]{
+                        print(answer(first,second))
+                        print("Guess the operator being used? +,-,*,/")
+                        if let chooseOp = readLine(){
+                            input1 = chooseOp
+                        }
+                        checkOperator()
+                    }
+                }
+            }
+        default:
             if let a = Double(f), let b = Double(s){
                 first = a
                 second = b
-                if let answer = operations[randomOp]{
+                
+                if let answer = operations[op]{
                     print(answer(first,second))
-                    print("Guess the operator being used? +,-,*,/")
-                    if let chooseOp = readLine(){
-                        input1 = chooseOp
-                    }
-                    checkOperator()
                 }
+                
+            }else{
+                print("Invalid arguments. Try again.")
+                print()
+                sleep(1)
+                binaryOption()
             }
-        }
-    default:
-        if let a = Double(f), let b = Double(s){
-            first = a
-            second = b
-            
-            if let answer = operations[op]{
-                print(answer(first,second))
-            }
-            
-        }else{
-            print("Invalid arguments. Try again.")
-            print()
-            sleep(1)
-            binaryOption()
         }
     }
     
+    getInput() //Retrieve input first
+    checkInput() //verify input
+    getAnswer() //Find answer
     
 }
 
@@ -197,8 +199,7 @@ func higherOrderOp(){
     var userNumberCondition = 0
     
     func customFilter(_ condition: String,_ numCondition: Int){
-        
-        
+    
         func getAnswer(_ arr: [Int],_ filterClosure: (Int) -> Bool )->[Int]{
             var answer = [Int]()
             for i in arr{
@@ -229,9 +230,6 @@ func higherOrderOp(){
         }
         
     }
-    
-    
-    
     
     func customMap(_ condition: String,_ numCondition: Int){
         
@@ -382,19 +380,15 @@ func higherOrderOp(){
             if let match = regex?.firstMatch(in: userInput, options: [], range: NSRange(location: 0, length: userInput.utf16.count)) {
                 if let arrRange = Range(match.range(at: 1), in: userInput) {
                     let arr = String(userInput[arrRange]).components(separatedBy: ",")
-                    //print(arr)
                     intArray = arr.compactMap({ Int($0.trimmingCharacters(in: .whitespacesAndNewlines)) })
-                    //   print(intArray)
                 }
                 if let addSubMulDivRange = Range(match.range(at: 2), in: userInput) {
                     let addSubMulDiv = String(userInput[addSubMulDivRange])
                     userCondition = addSubMulDiv
-                    //  print(greatOrless)
                 }
                 if let numberRange = Range(match.range(at: 3), in: userInput) {
                     let number = String(userInput[numberRange])
                     userNumberCondition = Int(number) ?? 0
-                    // print(number)
                 }
                 customReduce(userCondition, userNumberCondition)
             }else{
@@ -410,19 +404,15 @@ func higherOrderOp(){
             if let match = regex?.firstMatch(in: userInput, options: [], range: NSRange(location: 0, length: userInput.utf16.count)) {
                 if let arrRange = Range(match.range(at: 1), in: userInput) {
                     let arr = String(userInput[arrRange]).components(separatedBy: ",")
-                    //print(arr)
                     intArray = arr.compactMap({ Int($0.trimmingCharacters(in: .whitespacesAndNewlines)) })
-                    //   print(intArray)
                 }
                 if let addSubMulDivRange = Range(match.range(at: 2), in: userInput) {
                     let greatOrless = String(userInput[addSubMulDivRange])
                     userCondition = greatOrless
-                    //  print(greatOrless)
                 }
                 if let numberRange = Range(match.range(at: 3), in: userInput) {
                     let number = String(userInput[numberRange])
                     userNumberCondition = Int(number) ?? 0
-                    // print(number)
                 }
                 customMap(userCondition, userNumberCondition)
             }else{
