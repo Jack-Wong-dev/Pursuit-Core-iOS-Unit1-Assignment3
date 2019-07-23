@@ -179,7 +179,8 @@ func binaryOption(){
 }
 
 func playAgain(){
-    print("Play again? Y/N", terminator:" ")
+    print()
+    print("Calculate Again? Y/N", terminator:" ")
     let again = readLine()
     if let a = again{
         if a.uppercased() == "Y"{
@@ -215,13 +216,24 @@ func higherOrderOp(){
             let greaterThan = {(x: Int) -> Bool in
                 x > Int(numCondition) ? true : false
             }
-            print(getAnswer(intArray, greaterThan))
+            print("Filter results: \(getAnswer(intArray, greaterThan))")
+        
+        case ">=":
+            let greaterThanEq = {(x: Int) -> Bool in
+                x >= Int(numCondition) ? true : false
+            }
+            print("Filter results: \(getAnswer(intArray, greaterThanEq))")
             
         case "<":
             let lessThan = {(x: Int) -> Bool in
                 x < Int(numCondition) ? true : false
             }
-            print(getAnswer(intArray, lessThan))
+            print("Filter results: \(getAnswer(intArray, lessThan))")
+        case "<=":
+            let lessThanEq = {(x: Int) -> Bool in
+                x <= Int(numCondition) ? true : false
+            }
+            print("Filter results: \(getAnswer(intArray, lessThanEq))")
         default:
             print("Invalid input. Try again")
             print()
@@ -248,22 +260,22 @@ func higherOrderOp(){
             let add = {(n: Int) -> Int in
                 return n + numCondition
             }
-            print(getAnswer(intArray, add))
+            print("Mapped Result \(getAnswer(intArray, add))")
         case "-":
             let sub = {(n: Int) -> Int in
                 return n - numCondition
             }
-            print(getAnswer(intArray, sub))
+            print("Mapped Result \(getAnswer(intArray, sub))")
         case "*":
             let multiply = {(n: Int) -> Int in
                 return n * numCondition
             }
-            print(getAnswer(intArray, multiply))
+            print("Mapped Result \(getAnswer(intArray, multiply))")
         case "/":
             let divide = {(n: Int) -> Int in
                 return n / numCondition
             }
-            print(getAnswer(intArray, divide))
+            print("Mapped Result \(getAnswer(intArray, divide))")
         default:
             print("Valid input not found.  Try again")
             print()
@@ -284,7 +296,7 @@ func higherOrderOp(){
                 }
                 return sum
             }
-            print(answer(intArray))
+            print("Reduce result \(answer(intArray))")
         case "-":
             let answer = {(arr: [Int]) -> Int in
                 var difference = 0 - numCondition
@@ -293,7 +305,7 @@ func higherOrderOp(){
                 }
                 return difference
             }
-            print(answer(intArray))
+            print("Reduce result \(answer(intArray))")
         case "*":
             let answer = {(arr: [Int]) -> Int in
                 var product = numCondition
@@ -302,7 +314,7 @@ func higherOrderOp(){
                 }
                 return product
             }
-            print(answer(intArray))
+            print("Reduce result \(answer(intArray))")
         case "/":
             let answer = {(arr: [Int]) -> Int in
                 var quotient = numCondition
@@ -311,7 +323,7 @@ func higherOrderOp(){
                 }
                 return quotient
             }
-            print(answer(intArray))
+            print("Reduce result \(answer(intArray))")
         default:
             print("Invalid Input. Try again")
             print()
@@ -325,7 +337,7 @@ func higherOrderOp(){
     var keyword = String()
     
     func checkUserInput(){
-        print("Enter filter/reduce/map")
+        print("Enter your operation. (filter/map/reduce) 1,2,3,4,5 by (+,-,*,/,<,>,<=,>=) 1")
         let user = readLine()
         if let a = user{
             userInput = a
@@ -345,7 +357,7 @@ func higherOrderOp(){
     func keywordDecision(){
         switch keyword {
         case "filter":
-            let pattern = "^\\s*filter\\s*([\\d+\\s*,\\s*]+\\d+)\\s*by\\s*(<|>)\\s*(\\d+)\\s*$"
+            let pattern = "^\\s*filter\\s*([\\d+\\s*,\\s*]+\\d+)\\s*by\\s*(<|>|<=|>=)\\s*(\\d+)\\s*$"
             let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
             
             if let match = regex?.firstMatch(in: userInput, options: [], range: NSRange(location: 0, length: userInput.utf16.count)) {
@@ -365,6 +377,11 @@ func higherOrderOp(){
                     userNumberCondition = Int(number) ?? 0
                     // print(number)
                 }
+                
+            // greater than or equal to
+                
+            // less than or equal to
+                
                 customFilter(userCondition, userNumberCondition)
             }else{
                 print("You entered an invalid input.  Try again")
