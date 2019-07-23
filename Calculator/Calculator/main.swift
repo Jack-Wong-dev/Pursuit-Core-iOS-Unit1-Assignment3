@@ -374,8 +374,7 @@ func higherOrderOp(){
                 }
                 if let numberRange = Range(match.range(at: 3), in: userInput) {
                     let number = String(userInput[numberRange])
-                    userNumberCondition = Int(number) ?? 0
-                    // print(number)
+                    userNumberCondition = Int(number.trimmingCharacters(in: .whitespacesAndNewlines))!
                 }
                 
             // greater than or equal to
@@ -391,7 +390,7 @@ func higherOrderOp(){
             }
             
         case "reduce":
-            let pattern = "^\\s*reduce\\s*([\\d+,]+\\d+)\\s*by\\s*(\\+|\\-|\\*|\\/)\\s*(\\d+)\\s*$"
+            let pattern = "^\\s*reduce\\s*([\\d+\\s*,\\s*]+\\d+)\\s*by\\s*(\\+|\\-|\\*|\\/)\\s*(\\d+)\\s*$"
             let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
             
             if let match = regex?.firstMatch(in: userInput, options: [], range: NSRange(location: 0, length: userInput.utf16.count)) {
@@ -405,7 +404,7 @@ func higherOrderOp(){
                 }
                 if let numberRange = Range(match.range(at: 3), in: userInput) {
                     let number = String(userInput[numberRange])
-                    userNumberCondition = Int(number) ?? 0
+                    userNumberCondition = Int(number.trimmingCharacters(in: .whitespacesAndNewlines))!
                 }
                 customReduce(userCondition, userNumberCondition)
             }else{
@@ -415,7 +414,7 @@ func higherOrderOp(){
             }
             
         case "map":
-            let pattern = "^\\s*map\\s*([\\d+,]+\\d+)\\s*by\\s*(\\+|\\-|\\*|\\/)\\s*(\\d+)\\s*$"
+            let pattern = "^\\s*map\\s*([\\d+\\s*,\\s*]+\\d+)\\s*by\\s*(\\+|\\-|\\*|\\/)\\s*(\\d+)\\s*$"
             let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive)
             
             if let match = regex?.firstMatch(in: userInput, options: [], range: NSRange(location: 0, length: userInput.utf16.count)) {
@@ -429,7 +428,7 @@ func higherOrderOp(){
                 }
                 if let numberRange = Range(match.range(at: 3), in: userInput) {
                     let number = String(userInput[numberRange])
-                    userNumberCondition = Int(number) ?? 0
+                    userNumberCondition = Int(number.trimmingCharacters(in: .whitespacesAndNewlines))!
                 }
                 customMap(userCondition, userNumberCondition)
             }else{
